@@ -1,0 +1,28 @@
+version: "3"
+services:
+  employee-jdbc:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: employee-jdbc
+    ports:
+      - "9090:9090"
+    restart: always
+    networks:
+      - employee-mysql
+    depends_on:
+      - mysqldb
+ 
+  mysqldb:
+    image: mysql:8
+    networks:
+      - employee-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bootdb  
+    volumes:
+      - my-datavolume:/var/lib/mysql
+volumes:
+  my-datavolume:
+networks:
+  employee-mysql:
